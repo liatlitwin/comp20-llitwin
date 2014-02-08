@@ -1,0 +1,31 @@
+body{
+	font-family: 'Rockwell'
+}
+
+@media (min-width: 992px){
+	#omfgdogs{
+
+		background: url('omfgdogs.gif');
+		position:absolute;
+		top:0; right:0;
+		bottom:0; left:0;	
+
+		
+	}
+
+
+}
+
+a:link {color: #FF00FF; text-decoration: none; }
+a:visited{color: #CC0099; text-decoration: none;}
+
+#link{
+
+	text-align: left;
+	font-size: 24px;
+	background-color: black;
+	position:absolute;
+	bottom: 0; right:0;
+	padding: 5px;
+	font-family: 'Rockwell extra bold'
+}
