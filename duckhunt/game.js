@@ -2,19 +2,16 @@
     function draw() {
         canvas = document.getElementById('game');
        
-      
-        //document.body.appendChild(img);
         // Check if canvas is supported on browser
         if (canvas.getContext) {
             var ctx = canvas.getContext('2d');
                 //draw sky
-                // ctx.drawImage(img, 380,5,520,260,0,0,800,600);
                 ctx.fillStyle = '#87CEEB';
                 ctx.fillRect(0, 0, 800, 600);
+           
             var img = new Image();
             img.src = 'assets/duckhunt.png';
-            img.onload = function(){
-               
+            img.onload = function fromSprite(){
                 
                 ctx.drawImage(img, 0,271, 84,125,20,20,352,525);
                 ctx.drawImage(img, 0,700,800,183,0, 417, 800,183);
@@ -28,8 +25,7 @@
                 ctx.scale(-1, 1);
                 ctx.drawImage(img, 258, 119, 37,37,0,0,60,60);
                 ctx.drawImage(img, 80, 150, 40,40,-50,200,60,60);
-                ctx.drawImage(img, 0, 115, 40,40,300,100,60,60);
-                
+                ctx.drawImage(img, 0, 115, 40,40,300,100,60,60);    
             }
 
         }
