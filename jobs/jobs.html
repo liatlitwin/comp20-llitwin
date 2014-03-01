@@ -26,19 +26,24 @@
 		str.forEach(function(friend) {
 			var list = document.getElementById("list");
 
-			var cmpny = document.createElement("li");
+			var box = document.createElement("table");
+			
+			var cmpny = document.createElement("tr");
 			cmpny.appendChild(document.createTextNode("Company: " + friend.company));
-			var pstn = document.createElement("li");
+			var pstn = document.createElement("tr");
 			pstn.appendChild(document.createTextNode("Position: " + friend.position));
-			var lctn = document.createElement("li");
+			var lctn = document.createElement("tr");
 			lctn.appendChild(document.createTextNode("Location: " + friend.location));
 
-			list.appendChild(cmpny);
-			list.appendChild(pstn);
-			list.appendChild(lctn);
-			list.appendChild(document.createElement("br"));
+			box.appendChild(cmpny);
+			box.appendChild(pstn);
+			box.appendChild(lctn);
+			box.style.background = "#8F90C9";
+			box.style.border = "thick double #393A6E";
 
-			
+
+			list.appendChild(box);
+			list.appendChild(document.createElement("br"));			
 		});
 
 		
