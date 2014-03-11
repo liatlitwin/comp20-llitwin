@@ -78,8 +78,9 @@ var image = {
 }
 var directions = new Array();
 var time_remaining = new Array();
-	
-
+var Jstations = new Array();
+var trip_ids = new Array();
+var contents = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
@@ -95,14 +96,17 @@ var time_remaining = new Array();
 			//successful
 			scheduleData = JSON.parse(xhr.responseText);
 			line_color = scheduleData["line"];
+
+			//store data from API into various arrays
 			for(i=0; i<scheduleData["schedule"].length; i++){
-				console.log(scheduleData["schedule"][i]["Destination"]); 
 				directions.push(scheduleData["schedule"][i]["Destination"]);
+				trip_ids.push(scheduleData["schedule"][i]["TripID"]);
+				
 				for(j = 0; j<scheduleData["schedule"][i]["Predictions"].length; j++){
-					console.log(scheduleData["schedule"][i]["Predictions"][j]["Stop"]);
+					Jstations.push(scheduleData["schedule"][i]["Predictions"][j]["Stop"]);
+					time_remaining.push(scheduleData["schedule"][i]["Predictions"][j]["Seconds"])
 				}
 			}
-			
 			createMarkers();
 
 		}
@@ -118,7 +122,6 @@ var time_remaining = new Array();
 				myLat = position.coords.latitude;
 				myLng = position.coords.longitude;
 				renderMap();
-				console.log("called getMyLocation");
 			});
 		}
 		else {
@@ -142,10 +145,10 @@ var time_remaining = new Array();
 		marker.setMap(map);
 			
 		// Open info window on click of marker
-		google.maps.event.addListener(marker, 'click', function() {
+		//google.maps.event.addListener(marker, 'click', function() {
 			infowindow.setContent(marker.title);
 			infowindow.open(map, marker);
-		});
+		//});
 		console.log("called renderMap");
 		
 		
@@ -166,7 +169,7 @@ var time_remaining = new Array();
 				stationCoords.push(stationLoc);
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.close();
-					infowindow.setContent(station.station);
+					infowindow.setContent(markerContent(station.station));
 					infowindow.open(map, this);
 				});
 			} 
@@ -180,9 +183,18 @@ var time_remaining = new Array();
 		});
 		
 	}
-	function markerContent(){
+	function markerContent(station){
 
-
+		
+			for(i=0; i<Jstations.length; i++){
+				if (Jstations[i] == station)
+				{
+					content = "<strong>" + Jstations[i] + "</strong>" + '<table id="schedule"><tr><th>Line</th><th>Trip #</th><th>Direction</th><th>Time Remaining</th></tr>';
+					//for(j=0; j<directions.length; j++){
+				}
+			}
+			return content;
+		
 
 	}
 
