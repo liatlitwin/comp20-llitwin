@@ -71,7 +71,13 @@ var infowindow = new google.maps.InfoWindow();
 var xhr;
 var line_color;
 var stationCoords = new Array();
-
+var image = {
+	url: 'T_stop.png',
+	origin: new google.maps.Point(0,0),
+	anchor: new google.maps.Point(15,15)
+}
+var directions = new Array();
+var time_remaining = new Array();
 	
 
 	function init()
@@ -89,12 +95,19 @@ var stationCoords = new Array();
 			//successful
 			scheduleData = JSON.parse(xhr.responseText);
 			line_color = scheduleData["line"];
-			alert(line_color);
+			for(i=0; i<scheduleData["schedule"].length; i++){
+				console.log(scheduleData["schedule"][i]["Destination"]); 
+				directions.push(scheduleData["schedule"][i]["Destination"]);
+				for(j = 0; j<scheduleData["schedule"][i]["Predictions"].length; j++){
+					console.log(scheduleData["schedule"][i]["Predictions"][j]["Stop"]);
+				}
+			}
+			
 			createMarkers();
 
 		}
 		else if(xhr.readyState == 4 && xhr.status == 500){
-			//error
+			alert("Error: so much fail!")
 		}
 	}
 	
@@ -140,14 +153,6 @@ var stationCoords = new Array();
 
 	function createMarkers()
 	{
-		console.log("create marker")
-		var image = {
-			url: 'T_stop.png',
-			//size: new google.maps.Size(59,45),
-			origin: new google.maps.Point(0,0),
-			anchor: new google.maps.Point(15,15)
-		}
-		
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
@@ -166,10 +171,6 @@ var stationCoords = new Array();
 				});
 			} 
 		});
-		for(i = 0; i < stationCoords.length; i++ )
-		{
-			console.log(stationCoords[i] + ", ");
-		}
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
@@ -178,5 +179,10 @@ var stationCoords = new Array();
 			strokeWeight: 5
 		});
 		
+	}
+	function markerContent(){
+
+
+
 	}
 
