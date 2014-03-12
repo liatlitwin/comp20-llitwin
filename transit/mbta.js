@@ -194,7 +194,11 @@ var distances = new Array();
 	}
 
 	function calculateDistance(lat, lng){
-		getMyLocation();
+		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+			navigator.geolocation.getCurrentPosition(function(position) {
+				myLat = position.coords.latitude;
+				myLng = position.coords.longitude;		
+			}
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
