@@ -177,15 +177,15 @@ var distances = new Array();
 		}
 	}
 
-	function calculateDistance(lat, long){
+	function calculateDistance(lat, lng){
 
 		var R = 6371; // km 
-		var x1 = myLat-lat;
+		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
-		var x2 = myLng-long;
+		var x2 = lng- myLng;
 		var dLon = x2.toRad();  
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-		                Math.cos(lat.toRad()) * Math.cos(myLat.toRad()) * 
+		                Math.cos(myLat.toRad()) * Math.cos(lat.toRad()) * 
 		                Math.sin(dLon/2) * Math.sin(dLon/2);  
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var d = R * c; 
