@@ -117,6 +117,7 @@ var distances = new Array();
 				// Open info window on click of marker
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(marker.title);
+				});
 			});
 		}
 		else {
