@@ -202,15 +202,14 @@ var distances = new Array();
 		// Create a marker
 		marker = new google.maps.Marker({
 			position: me,
-			title: "Current location" + " shortest: " + shortest_station;
+			//title: "Current location" + " shortest: " + shortest_station;
 
 		});
 		marker.setMap(map);
 			
 		distances.min()
-		infowindow.setContent(marker.title);
+		infowindow.setContent("current location" +  " shortest: " + shortest_station);
 		infowindow.open(map, marker);
-		console.log("called renderMap");
 		
 		
 	}
