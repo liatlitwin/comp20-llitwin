@@ -73,7 +73,6 @@ var myOptions = {
 };
 var map;
 var marker;
-var MeMarker;
 var infowindow = new google.maps.InfoWindow();
 var xhr;
 var line_color;
@@ -90,11 +89,13 @@ var distances = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
-		getMyLocation();
+		//getMyLocation();
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
 		xhr.send(null);
+
+		
 	}
 
 	function getMyLocation()
@@ -131,7 +132,14 @@ var distances = new Array();
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
-				var stationLoc = new google.maps.LatLng(station.lat, station.long);	
+				var stationLoc = new google.maps.LatLng(station.lat, station.long);
+				if(calculateDistance(station.lat, station.long) < shortest){
+					shortest = calculateDistance(station.lat, station.long);
+					shortest_station = station.station;
+					console.log("distance:" + shortest + "  station: " + station.station);
+				}
+
+				
 				var marker = new google.maps.Marker({
 					map: map,
 					position: stationLoc,
@@ -161,22 +169,16 @@ var distances = new Array();
 					infowindow.setContent(content);
 					infowindow.open(map, this);
 				});
-
-				if(calculateDistance(station.lat, station.long) < shortest){
-					shortest = calculateDistance(station.lat, station.long);
-					shortest_station = station.station;
-					console.log("distance:" + shortest + "  station: " + station.station);
-				}
-
-				MeMarker = new google.maps.Marker({
-					position: me
-				});
-				MeMarker.setMap(map);
-				infowindow.setContent("current location, closest: " + shortest_station);
-				infowindow.open(map, MeMarker);
 			} 
 		});
-		
+		marker = new google.maps.Marker({
+		position: me
+			//title: "Current location" + " closest: " + shortest_station;
+
+		});
+		marker.setMap(map);
+		infowindow.setContent("current location, closest: " + shortest_station);
+		infowindow.open(map, marker);	
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
