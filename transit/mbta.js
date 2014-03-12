@@ -111,9 +111,9 @@ var distances = new Array();
 
 				});
 				marker.setMap(map);
-				infowindow.setContent("current location, closest: " + shortest_station);
+				//infowindow.setContent("current location, closest: " + shortest_station);
 				infowindow.open(map, marker);	
-				
+
 			});
 		}
 		else {
@@ -191,18 +191,7 @@ var distances = new Array();
 	
 
 	function calculateDistance(lat, lng){
-		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
-			navigator.geolocation.getCurrentPosition(function(position) {
-				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;
-				me = new google.maps.LatLng(myLat, myLng);			
-				// Update map and go there...
-				map.panTo(me);
-			});
-		}
-		else {
-			alert("Geolocation is not supported by your web browser.  What a shame!");
-		}
+
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
