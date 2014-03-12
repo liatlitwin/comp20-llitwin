@@ -174,18 +174,7 @@ var distances = new Array();
 			} 
 
 		});
-		MyMarker = new google.maps.Marker({
-			position: me,
-			title: "CURRENT LOCATION. Closest station: " + shortest_station
-		});
-		MyMarker.setMap(map);
-		google.maps.event.addListener(MyMarker, 'click', function() {
-					infowindow.setContent(MyMarker.title);
-					infowindow.open(map, MyMarker);
-					console.log("MAKING MARKER!!");
-
-				});
-
+		
 		
 
 		var polyLine = new google.maps.Polyline({
@@ -209,12 +198,17 @@ var distances = new Array();
 				// Update map and go there...
 				map.panTo(me);
 
-				// Create a marker
 				MyMarker = new google.maps.Marker({
 					position: me,
-					//title: "Here I Am!"
+					title: "CURRENT LOCATION. Closest station: " + shortest_station
 				});
 				MyMarker.setMap(map);
+				google.maps.event.addListener(MyMarker, 'click', function() {
+						infowindow.setContent(MyMarker.title);
+						infowindow.open(map, MyMarker);
+						console.log("MAKING MARKER!!");
+				});
+
 			});
 		}
 		else {
