@@ -106,7 +106,8 @@ var distances = new Array();
 				// Update map and go there...
 				map.panTo(me);
 				marker = new google.maps.Marker({
-				position: me
+					
+					position: me
 					//title: "Current location" + " closest: " + shortest_station;
 
 				});
