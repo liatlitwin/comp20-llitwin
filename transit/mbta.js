@@ -89,7 +89,7 @@ var distances = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
-		getMyLocation();
+		//getMyLocation();
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
@@ -109,6 +109,7 @@ var distances = new Array();
 	}
 	function createMarkers()
 	{
+		getMyLocation();
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
 		
