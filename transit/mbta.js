@@ -108,8 +108,9 @@ var distances = new Array();
 				map.panTo(me);
 
 				// Create a marker
-		
+			});
 		}
+		
 		else {
 			alert("Geolocation is not supported by your web browser.  What a shame!");
 		}
@@ -182,7 +183,7 @@ var distances = new Array();
 					infowindow.open(map, MyMarker);
 				});
 
-			});
+		
 
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
