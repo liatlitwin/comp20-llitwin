@@ -176,11 +176,7 @@ var distances = new Array();
 				});
 			} 
 
-			google.maps.event.addListener(MyMarker, 'click', function() {
-					infowindow.close();
-					infowindow.setContent("Current Location, closest station: " + shortest_station);
-					infowindow.open(map, this);
-				});
+		
 
 		});
 		
