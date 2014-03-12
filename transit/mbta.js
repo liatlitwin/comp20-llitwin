@@ -110,14 +110,15 @@ var distances = new Array();
 	{
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
-		shortest = 0;
+		shortest = 1000000000;
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
-				if(calculateDistance(station.lat, station.long) > shortest){
+				if(calculateDistance(station.lat, station.long) < shortest){
 					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
+					console.log("distance:" + shortest + "  station: " + station.station);
 				}
 				
 				var marker = new google.maps.Marker({
