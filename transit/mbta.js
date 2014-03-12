@@ -89,7 +89,7 @@ var distances = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
-		//getMyLocation();
+		getMyLocation();
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
@@ -170,8 +170,23 @@ var distances = new Array();
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
 				myLng = position.coords.longitude;
-				renderMap();
-			});
+						me = new google.maps.LatLng(myLat, myLng);
+						
+						// Update map and go there...
+						map.panTo(me);
+
+						// Create a marker
+						marker = new google.maps.Marker({
+							position: me
+							//title: "Current location" + " shortest: " + shortest_station;
+
+						});
+						marker.setMap(map);
+							
+						distances.min()
+						infowindow.setContent("current location, shortest: " + shortest_station);
+						infowindow.open(map, marker);		
+		});
 		}
 		else {
 			alert("Geolocation is not supported by your web browser.  What a shame!");
@@ -190,33 +205,13 @@ var distances = new Array();
 		                Math.sin(dLon/2) * Math.sin(dLon/2);  
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var d = R * c; 
-console.log(myLat +"," + myLng);
+		console.log(myLat +"," + myLng);
 		return d;
 
 		
 	}
 
 
-	function renderMap()
-	{
-		me = new google.maps.LatLng(myLat, myLng);
-		
-		// Update map and go there...
-		map.panTo(me);
-
-		// Create a marker
-		marker = new google.maps.Marker({
-			position: me
-			//title: "Current location" + " shortest: " + shortest_station;
-
-		});
-		marker.setMap(map);
-			
-		distances.min()
-		infowindow.setContent("current location, shortest: " + shortest_station);
-		infowindow.open(map, marker);
-		
-		
-	}
+	
 
 	
