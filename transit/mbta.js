@@ -180,7 +180,7 @@ var distances = new Array();
 		var R = 6371; // km 
 		var x1 = myLat-lat;
 		var dLat = x1.toRad();  
-		var x2 = myLng-lng;
+		var x2 = myLng-long;
 		var dLon = x2.toRad();  
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
 		                Math.cos(lat.toRad()) * Math.cos(myLat.toRad()) * 
