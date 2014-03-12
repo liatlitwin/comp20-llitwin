@@ -191,6 +191,8 @@ var distances = new Array();
 		var d = R * c; 
 
 		return d;
+
+		console.log(myLat +"," + myLng);
 	}
 
 
