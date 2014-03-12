@@ -110,7 +110,7 @@ var distances = new Array();
 	{
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
-		shortest = 100000;
+		shortest = 10000000;
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
