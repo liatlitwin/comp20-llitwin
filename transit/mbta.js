@@ -105,6 +105,15 @@ var distances = new Array();
 				me = new google.maps.LatLng(myLat, myLng);			
 				// Update map and go there...
 				map.panTo(me);
+				marker = new google.maps.Marker({
+				position: me
+					//title: "Current location" + " closest: " + shortest_station;
+
+				});
+				marker.setMap(map);
+				infowindow.setContent("current location, closest: " + shortest_station);
+				infowindow.open(map, marker);	
+				
 			});
 		}
 		else {
@@ -169,14 +178,7 @@ var distances = new Array();
 				});
 			} 
 		});
-		marker = new google.maps.Marker({
-		position: me
-			//title: "Current location" + " closest: " + shortest_station;
-
-		});
-		marker.setMap(map);
-		infowindow.setContent("current location, closest: " + shortest_station);
-		infowindow.open(map, marker);	
+		
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
