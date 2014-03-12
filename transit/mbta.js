@@ -174,15 +174,17 @@ var distances = new Array();
 
 		});
 		MyMarker = new google.maps.Marker({
-			position: me;
+			position: me
 			title: "CURRENT LOCATION. Closest station: " + shortest_station
-			console.log("MAKING MARKER!!");
+			
 			
 		});
 		MyMarker.setMap(map);
 		google.maps.event.addListener(MyMarker, 'click', function() {
 					infowindow.setContent(MyMarker.title);
 					infowindow.open(map, MyMarker);
+					console.log("MAKING MARKER!!");
+
 				});
 
 		
