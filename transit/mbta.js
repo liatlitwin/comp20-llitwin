@@ -175,8 +175,10 @@ var distances = new Array();
 			map: map,
 			position: me
 		});
-		infowindow.setContent("Current Location, closest station: " + shortest_station);
-		
+		google.maps.event.addListener(MyMarker, 'click', function() {
+			infowindow.setContent("Current Location, closest station: " + shortest_station);
+			infowindow.open(map, this);
+		});
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
