@@ -73,6 +73,7 @@ var myOptions = {
 };
 var map;
 var marker;
+var myMarker;
 var infowindow = new google.maps.InfoWindow();
 var xhr;
 var line_color;
@@ -89,11 +90,12 @@ var distances = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
-		getMyLocation();
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
 		xhr.send(null);
+		getMyLocation();
+
 	}
 
 	function getMyLocation()
@@ -105,13 +107,13 @@ var distances = new Array();
 				me = new google.maps.LatLng(myLat, myLng);			
 				// Update map and go there...
 				map.panTo(me);
-				marker = new google.maps.Marker({
+				myMarker = new google.maps.Marker({
 				position: me
 					//title: "Current location" + " closest: " + shortest_station;
 
 				});
-				marker.setMap(map);
-				//infowindow.setContent("current location, closest: " + shortest_station);
+				myMarker.setMap(map);
+				infowindow.setContent("current location, closest: " + shortest_station);
 				infowindow.open(map, marker);	
 
 			});
@@ -191,7 +193,7 @@ var distances = new Array();
 	
 
 	function calculateDistance(lat, lng){
-
+		getMyLocation();
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
