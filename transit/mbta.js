@@ -207,7 +207,7 @@ var distances = new Array();
 					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
 					position: me,
 				});
-				Infowindow.open(map);
+				infowindow.open(map);
 
 			});
 		}
