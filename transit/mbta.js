@@ -139,7 +139,7 @@ var distances = new Array();
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
 				if(calculateDistance(station.lat, station.long) < shortest){
-					shortest = calculateDistance(station.lat, station.long, myLat, myLng);
+					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
 				}
@@ -195,8 +195,26 @@ var distances = new Array();
 	}
 	
 
-	function calculateDistance(lat, lng, myLat, myLng){
+	function calculateDistance(lat, lng){
+		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+			navigator.geolocation.getCurrentPosition(function(position) {
+				myLat = position.coords.latitude;
+				myLng = position.coords.longitude;
+				me = new google.maps.LatLng(myLat, myLng);			
+				// Update map and go there...
+				map.panTo(me);
 
+				// Create a marker
+				MyMarker = new google.maps.Marker({
+					position: me,
+					//title: "Here I Am!"
+				});
+				MyMarker.setMap(map);
+			});
+		}
+		else {
+			alert("Geolocation is not supported by your web browser.  What a shame!");
+		}
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
