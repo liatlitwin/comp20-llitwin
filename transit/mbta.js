@@ -97,6 +97,26 @@ var distances = new Array();
 
 		
 	}
+
+	function getMyLocation()
+	{
+		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+			navigator.geolocation.getCurrentPosition(function(position) {
+				myLat = position.coords.latitude;
+				myLng = position.coords.longitude;
+				me = new google.maps.LatLng(myLat, myLng);
+				
+				// Update map and go there...
+				map.panTo(me);
+
+				// Create a marker
+					
+		});
+		}
+		else {
+			alert("Geolocation is not supported by your web browser.  What a shame!");
+		}
+	}
 	function dataReady(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			//successful
@@ -122,6 +142,7 @@ var distances = new Array();
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
 				}
+
 				
 				var marker = new google.maps.Marker({
 					map: map,
@@ -154,6 +175,16 @@ var distances = new Array();
 				});
 			} 
 		});
+		marker = new google.maps.Marker({
+		position: me
+			//title: "Current location" + " shortest: " + shortest_station;
+
+		});
+		marker.setMap(map);
+			
+		distances.min()
+		infowindow.setContent("current location, shortest: " + shortest_station);
+		infowindow.open(map, marker);	
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
@@ -164,34 +195,6 @@ var distances = new Array();
 		
 	}
 	
-	function getMyLocation()
-	{
-		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
-			navigator.geolocation.getCurrentPosition(function(position) {
-				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;
-						me = new google.maps.LatLng(myLat, myLng);
-						
-						// Update map and go there...
-						map.panTo(me);
-
-						// Create a marker
-						marker = new google.maps.Marker({
-							position: me
-							//title: "Current location" + " shortest: " + shortest_station;
-
-						});
-						marker.setMap(map);
-							
-						distances.min()
-						infowindow.setContent("current location, shortest: " + shortest_station);
-						infowindow.open(map, marker);		
-		});
-		}
-		else {
-			alert("Geolocation is not supported by your web browser.  What a shame!");
-		}
-	}
 
 	function calculateDistance(lat, lng){
 		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
