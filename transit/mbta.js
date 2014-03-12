@@ -91,10 +91,7 @@ var distances = new Array();
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
 		getMyLocation();
-		xhr = new XMLHttpRequest();
-		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
-		xhr.onreadystatechange = dataReady;
-		xhr.send(null);
+		
 
 		
 	}
@@ -108,15 +105,15 @@ var distances = new Array();
 				me = new google.maps.LatLng(myLat, myLng);			
 				// Update map and go there...
 				map.panTo(me);
-
-					
-				
-
 			});
 		}
 		else {
 			alert("Geolocation is not supported by your web browser.  What a shame!");
 		}
+		xhr = new XMLHttpRequest();
+		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
+		xhr.onreadystatechange = dataReady;
+		xhr.send(null);
 	}
 	function dataReady(){
 		if(xhr.readyState == 4 && xhr.status == 200){
@@ -173,7 +170,7 @@ var distances = new Array();
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
 				}
-				
+
 				MeMarker = new google.maps.Marker({
 					position: me
 				});
