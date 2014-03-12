@@ -104,14 +104,10 @@ var distances = new Array();
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
 				myLng = position.coords.longitude;
-				me = new google.maps.LatLng(myLat, myLng);
-				
+				me = new google.maps.LatLng(myLat, myLng);			
 				// Update map and go there...
 				map.panTo(me);
-
-				// Create a marker
-					
-		});
+			});
 		}
 		else {
 			alert("Geolocation is not supported by your web browser.  What a shame!");
@@ -200,7 +196,8 @@ var distances = new Array();
 		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;		
+				myLng = position.coords.longitude;	
+				map.panTo(me);	
 			});
 		}
 		var R = 6371; // km 
