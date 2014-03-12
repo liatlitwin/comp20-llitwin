@@ -90,7 +90,6 @@ var distances = new Array();
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
 		getMyLocation();
-
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
@@ -118,7 +117,7 @@ var distances = new Array();
 			if(station.Line.toLowerCase() == line_color){
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
-				if(calculateDistance(station.lat, station.long, myLat, myLng) < shortest){
+				if(calculateDistance(station.lat, station.long) < shortest){
 					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
@@ -194,15 +193,15 @@ var distances = new Array();
 		}
 	}
 
-	function calculateDistance(lat, lng, myLt, myLg){
+	function calculateDistance(lat, lng){
 		getMyLocation();
 		var R = 6371; // km 
-		var x1 = lat - myLt;
+		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
-		var x2 = lng- myLg;
+		var x2 = lng- myLng;
 		var dLon = x2.toRad();  
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-		                Math.cos(myLt.toRad()) * Math.cos(lat.toRad()) * 
+		                Math.cos(myLat.toRad()) * Math.cos(lat.toRad()) * 
 		                Math.sin(dLon/2) * Math.sin(dLon/2);  
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var d = R * c; 
