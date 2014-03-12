@@ -107,7 +107,12 @@ var distances = new Array();
 				// Update map and go there...
 				map.panTo(me);
 
-				
+				// Create a marker
+				MyMarker = new google.maps.Marker({
+					position: me,
+					//title: "Here I Am!"
+				});
+				MyMarker.setMap(map);
 			});
 		}
 		else {
@@ -170,15 +175,12 @@ var distances = new Array();
 					infowindow.open(map, this);
 				});
 			} 
-// Create a marker
-				MyMarker = new google.maps.Marker({
-					position: me,
-					//title: "Here I Am!"
+
+			google.maps.event.addListener(MyMarker, 'click', function() {
+					infowindow.close();
+					infowindow.setContent("Current Location, closest station: " + shortest_station);
+					infowindow.open(map, this);
 				});
-				MyMarker.setMap(map);
-			MyMarker.info = new google.maps.InfoWindow({
-				content: "Current Location, closest station: " + shortest_station
-			})
 
 		});
 		
