@@ -94,6 +94,7 @@ var distances = new Array();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
 		xhr.send(null);
+		renderMap();
 		
 	}
 	function dataReady(){
@@ -169,7 +170,7 @@ var distances = new Array();
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
 				myLng = position.coords.longitude;
-				renderMap();
+				//renderMap();
 			});
 		}
 		else {
