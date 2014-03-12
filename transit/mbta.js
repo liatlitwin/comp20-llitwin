@@ -90,6 +90,7 @@ var distances = new Array();
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
 		getMyLocation();
+
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
@@ -114,15 +115,7 @@ var distances = new Array();
 		line_color = data["line"];
 		
 		stations.forEach(function(station){
-			if(station.Line.toLowerCase() == line_color){
-
-				var stationLoc = new google.maps.LatLng(station.lat, station.long);
-				if(calculateDistance(station.lat, station.long) < shortest){
-					shortest = calculateDistance(station.lat, station.long);
-					shortest_station = station.station;
-					console.log("distance:" + shortest + "  station: " + station.station);
-				}
-				
+			if(station.Line.toLowerCase() == line_color){				
 				var marker = new google.maps.Marker({
 					map: map,
 					position: stationLoc,
@@ -152,6 +145,13 @@ var distances = new Array();
 					infowindow.setContent(content);
 					infowindow.open(map, this);
 				});
+
+				var stationLoc = new google.maps.LatLng(station.lat, station.long);
+				if(calculateDistance(station.lat, station.long) < shortest){
+					shortest = calculateDistance(station.lat, station.long);
+					shortest_station = station.station;
+					console.log("distance:" + shortest + "  station: " + station.station);
+				}
 			} 
 		});
 		var polyLine = new google.maps.Polyline({
@@ -194,7 +194,7 @@ var distances = new Array();
 	}
 
 	function calculateDistance(lat, lng){
-
+		getMyLocation();
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
