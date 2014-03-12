@@ -108,17 +108,7 @@ var distances = new Array();
 				map.panTo(me);
 
 				// Create a marker
-					MyMarker = new google.maps.Marker({
-					position: me,
-					title: "CURRENT LOCATION. Closest station: " + shortest_station
-				});
-		MyMarker.setMap(map);
-		google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(marker.title);
-					infowindow.open(map, MyMarker);
-				});
-
-			});
+		
 		}
 		else {
 			alert("Geolocation is not supported by your web browser.  What a shame!");
@@ -182,8 +172,18 @@ var distances = new Array();
 			} 
 
 		});
-		
-	
+					MyMarker = new google.maps.Marker({
+					position: me,
+					title: "CURRENT LOCATION. Closest station: " + shortest_station
+				});
+		MyMarker.setMap(map);
+		google.maps.event.addListener(MyMarker, 'click', function() {
+					infowindow.setContent(MyMarker.title);
+					infowindow.open(map, MyMarker);
+				});
+
+			});
+
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
 			geodesic: true,
