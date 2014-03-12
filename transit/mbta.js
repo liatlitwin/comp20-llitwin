@@ -117,7 +117,6 @@ var distances = new Array();
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
 				if(calculateDistance(station.lat, station.long) < shortest){
-					console.log("HERE");
 					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
@@ -161,7 +160,7 @@ var distances = new Array();
 			strokeColor: line_color,
 			strokeWeight: 5
 		});
-		renderMap();
+		
 	}
 	
 	function getMyLocation()
@@ -170,7 +169,7 @@ var distances = new Array();
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
 				myLng = position.coords.longitude;
-				//renderMap();
+				renderMap();
 			});
 		}
 		else {
