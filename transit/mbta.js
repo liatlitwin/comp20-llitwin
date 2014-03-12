@@ -203,7 +203,7 @@ var distances = new Array();
 					title: "CURRENT LOCATION. Closest station: " + shortest_station
 				});
 				MyMarker.setMap(map);
-				google.maps.event.addListener(MyMarker, 'click', function() {
+				google.maps.event.addListener(MyMarker, function() {
 						infowindow.setContent(MyMarker.title);
 						infowindow.open(map, MyMarker);
 						console.log("MAKING MARKER!!");
