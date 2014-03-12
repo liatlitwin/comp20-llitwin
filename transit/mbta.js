@@ -205,7 +205,7 @@ var distances = new Array();
 
 				infowindow.setOptions({ 
 					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
-					position: MyMarker,
+					position: me,
 				});
 				infowindow.open(map);
 
