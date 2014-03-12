@@ -200,11 +200,13 @@ var distances = new Array();
 
 				MyMarker = new google.maps.Marker({
 					position: me,
-					title: "CURRENT LOCATION. Closest station: " + shortest_station
 				});
 				MyMarker.setMap(map);
 				infoWindow = new google.maps.InfoWindow();
-				infoWindow.setOptions({ content: MyMarker.title, position: me });
+				infoWindow.setOptions({ 
+					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
+					position: me 
+				});
 				InfoWindow.open(map);
 
 			});
