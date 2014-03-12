@@ -131,7 +131,6 @@ var distances = new Array();
 	}
 	function createMarkers()
 	{
-		//getMyLocation();
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
 		
@@ -140,7 +139,7 @@ var distances = new Array();
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
 				if(calculateDistance(station.lat, station.long) < shortest){
-					shortest = calculateDistance(station.lat, station.long);
+					shortest = calculateDistance(station.lat, station.long, myLat, myLng);
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
 				}
@@ -196,7 +195,7 @@ var distances = new Array();
 	}
 	
 
-	function calculateDistance(lat, lng){
+	function calculateDistance(lat, lng, myLat, myLng){
 
 		var R = 6371; // km 
 		var x1 = lat - myLat;
