@@ -89,7 +89,7 @@ var distances = new Array();
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
-		getMyLocation();
+		//getMyLocation();
 		xhr = new XMLHttpRequest();
 		xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 		xhr.onreadystatechange = dataReady;
@@ -196,9 +196,13 @@ var distances = new Array();
 		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;	
+				myLng = position.coords.longitude;
+				me = new google.maps.LatLng(myLat, myLng);		
 				map.panTo(me);	
 			});
+		}
+		else {
+			alert("Geolocation is not supported by your web browser.  What a shame!");
 		}
 		var R = 6371; // km 
 		var x1 = lat - myLat;
