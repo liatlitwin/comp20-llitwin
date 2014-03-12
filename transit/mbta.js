@@ -203,11 +203,8 @@ var distances = new Array();
 				});
 				MyMarker.setMap(map);
 
-				infowindow.setOptions({ 
-					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
-					position: me,
-				});
-				infowindow.open(map);
+				infowindow.setContent: "CURRENT LOCATION. Closest station: " + shortest_station, 
+				infowindow.open(map, MyMarker);
 
 			});
 		}
