@@ -76,11 +76,7 @@ var image = {
 	origin: new google.maps.Point(0,0),
 	anchor: new google.maps.Point(15,15)
 }
-var directions = new Array();
-var time_remaining = new Array();
-var Jstations = new Array();
-var trip_ids = new Array();
-var contents = new Array();
+
 	function init()
 	{
 		map = new google.maps.Map(document.getElementById("map"), myOptions);
@@ -94,19 +90,6 @@ var contents = new Array();
 	function dataReady(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			//successful
-			scheduleData = JSON.parse(xhr.responseText);
-			line_color = scheduleData["line"];
-
-			//store data from API into various arrays
-			for(i=0; i<scheduleData["schedule"].length; i++){
-				directions.push(scheduleData["schedule"][i]["Destination"]);
-				trip_ids.push(scheduleData["schedule"][i]["TripID"]);
-				
-				for(j = 0; j<scheduleData["schedule"][i]["Predictions"].length; j++){
-					Jstations.push(scheduleData["schedule"][i]["Predictions"][j]["Stop"]);
-					time_remaining.push(scheduleData["schedule"][i]["Predictions"][j]["Seconds"])
-				}
-			}
 			createMarkers();
 
 		}
@@ -114,6 +97,74 @@ var contents = new Array();
 			alert("Error: so much fail!")
 		}
 	}
+	function createMarkers()
+	{
+		data = JSON.parse(xhr.responseText);
+		line_color = data["line"];
+		stations.forEach(function(station){
+			if(station.Line.toLowerCase() == line_color){
+
+				var stationLoc = new google.maps.LatLng(station.lat, station.long);
+				
+				var marker = new google.maps.Marker({
+					map: map,
+					position: stationLoc,
+					icon: image
+				});
+
+				var content = "<strong>" + station.station + "</strong>" + '<table id="schedule"><tr><th>Line</th><th>Trip #</th><th>Direction</th><th>Time Remaining</th></tr>';
+				data.schedule.forEach(function(trip){
+					trip.Predictions.forEach(function(prediction){
+						if(prediction.Stop == station.station){
+							content += "<tr><td>" + line_color + "</td>";
+							content += "<td>" + trip.TripID + "</td>";
+							content += "<td>" + trip.Destination + "</td>";
+							
+							minutes = Math.floor(prediction.Seconds/60);
+							seconds = prediction.Seconds - (minutes*60);
+							if(minutes < 10){minutes = "0" + minutes}
+							if(seconds < 10){seconds = "0" + seconds}
+							content += "<td>" + minutes +":" + seconds +"</td>";
+							console.log(prediction.Seconds + " trip#:" + trip.TripID);
+						}
+					});
+				});
+
+				stationCoords.push(stationLoc);
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.close();
+					infowindow.setContent(content);
+					infowindow.open(map, this);
+				});
+			} 
+		});
+		var polyLine = new google.maps.Polyline({
+			path: stationCoords,
+			geodesic: true,
+			map: map,
+			strokeColor: line_color,
+			strokeWeight: 5
+		});
+		
+	}
+
+
+	function markerContent(station){
+
+		
+			for(i=0; i<Jstations.length; i++){
+				if (Jstations[i] == station)
+				{
+					
+					//for(j=0; j<directions.length; j++){
+				}
+			}
+			return content;
+		
+
+	}
+
+
 	
 	function getMyLocation()
 	{
@@ -154,47 +205,4 @@ var contents = new Array();
 		
 	}
 
-	function createMarkers()
-	{
-		stations.forEach(function(station){
-			if(station.Line.toLowerCase() == line_color){
-
-				var stationLoc = new google.maps.LatLng(station.lat, station.long);
-				
-				var marker = new google.maps.Marker({
-					map: map,
-					position: stationLoc,
-					icon: image
-				});
-				stationCoords.push(stationLoc);
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.close();
-					infowindow.setContent(markerContent(station.station));
-					infowindow.open(map, this);
-				});
-			} 
-		});
-		var polyLine = new google.maps.Polyline({
-			path: stationCoords,
-			geodesic: true,
-			map: map,
-			strokeColor: line_color,
-			strokeWeight: 5
-		});
-		
-	}
-	function markerContent(station){
-
-		
-			for(i=0; i<Jstations.length; i++){
-				if (Jstations[i] == station)
-				{
-					content = "<strong>" + Jstations[i] + "</strong>" + '<table id="schedule"><tr><th>Line</th><th>Trip #</th><th>Direction</th><th>Time Remaining</th></tr>';
-					//for(j=0; j<directions.length; j++){
-				}
-			}
-			return content;
-		
-
-	}
-
+	
