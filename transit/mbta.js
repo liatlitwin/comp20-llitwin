@@ -56,8 +56,14 @@ var stations = [
 {"Line":"Red","station":"Shawmut","lat":42.29312583,"long":-71.06573796000001},
 {"Line":"Red","station":"Ashmont","lat":42.284652,"long":-71.06448899999999}];
 
-var myLat = 42.4;
-var myLng = -71.11;
+Array.prototype.min = function(){
+	return Math.min.apply(null, this);
+};
+Number.prototype.toRad = function() {
+   return this * Math.PI / 180;
+}
+var myLat = 0;
+var myLng = 0;
 var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
@@ -70,12 +76,15 @@ var marker;
 var infowindow = new google.maps.InfoWindow();
 var xhr;
 var line_color;
+var shortest;
+var shortest_station;
 var stationCoords = new Array();
 var image = {
 	url: 'T_stop.png',
 	origin: new google.maps.Point(0,0),
 	anchor: new google.maps.Point(15,15)
 }
+var distances = new Array();
 
 	function init()
 	{
@@ -101,10 +110,15 @@ var image = {
 	{
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
+		shortest = 100000;
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
+				if(calculateDistance(station.lat, station.long) < shortest){
+					shortest = calculateDistance(station.lat, station.long);
+					shortest_station = station.station;
+				}
 				
 				var marker = new google.maps.Marker({
 					map: map,
@@ -125,7 +139,6 @@ var image = {
 							if(minutes < 10){minutes = "0" + minutes}
 							if(seconds < 10){seconds = "0" + seconds}
 							content += "<td>" + minutes +":" + seconds +"</td>";
-							console.log(prediction.Seconds + " trip#:" + trip.TripID);
 						}
 					});
 				});
@@ -147,24 +160,6 @@ var image = {
 		});
 		
 	}
-
-
-	function markerContent(station){
-
-		
-			for(i=0; i<Jstations.length; i++){
-				if (Jstations[i] == station)
-				{
-					
-					//for(j=0; j<directions.length; j++){
-				}
-			}
-			return content;
-		
-
-	}
-
-
 	
 	function getMyLocation()
 	{
@@ -180,6 +175,23 @@ var image = {
 		}
 	}
 
+	function calculateDistance(lat, long){
+
+		var R = 6371; // km 
+		var x1 = myLat-lat;
+		var dLat = x1.toRad();  
+		var x2 = myLng-lng;
+		var dLon = x2.toRad();  
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+		                Math.cos(lat.toRad()) * Math.cos(myLat.toRad()) * 
+		                Math.sin(dLon/2) * Math.sin(dLon/2);  
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		var d = R * c; 
+
+		return d;
+	}
+
+
 	function renderMap()
 	{
 		me = new google.maps.LatLng(myLat, myLng);
@@ -190,16 +202,14 @@ var image = {
 		// Create a marker
 		marker = new google.maps.Marker({
 			position: me,
-			title: "Current location"
+			title: "Current location" + " shortest: " + shortest_station;
 
 		});
 		marker.setMap(map);
 			
-		// Open info window on click of marker
-		//google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(marker.title);
-			infowindow.open(map, marker);
-		//});
+		distances.min()
+		infowindow.setContent(marker.title);
+		infowindow.open(map, marker);
 		console.log("called renderMap");
 		
 		
