@@ -173,7 +173,7 @@ var distances = new Array();
 		});
 		MyMarker = new google.maps.Marker({
 			map: map,
-			position: me;
+			position: me
 		})
 		infowindow.setContent("Current Location, closest station: " + shortest_station);
 		
