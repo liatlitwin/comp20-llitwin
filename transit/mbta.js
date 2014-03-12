@@ -50,7 +50,11 @@ var stations = [
 {"Line":"Red","station":"Quincy Center","lat":42.251809,"long":-71.005409},
 {"Line":"Red","station":"Quincy Adams","lat":42.233391,"long":-71.007153},
 {"Line":"Red","station":"Braintree","lat":42.2078543,"long":-71.0011385},
-
+{"Line":"Red","station":"Quincy Adams","lat":42.233391,"long":-71.007153},
+{"Line":"Red","station":"Quincy Center","lat":42.251809,"long":-71.005409},
+{"Line":"Red","station":"Wollaston","lat":42.2665139,"long":-71.0203369},
+{"Line":"Red","station":"North Quincy","lat":42.275275,"long":-71.029583},
+{"Line":"Red","station":"JFK/UMass","lat":42.320685,"long":-71.052391},
 {"Line":"Red","station":"Savin Hill","lat":42.31129,"long":-71.053331},
 {"Line":"Red","station":"Fields Corner","lat":42.300093,"long":-71.061667},
 {"Line":"Red","station":"Shawmut","lat":42.29312583,"long":-71.06573796000001},
