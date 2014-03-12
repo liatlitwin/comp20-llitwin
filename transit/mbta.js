@@ -109,10 +109,6 @@ var distances = new Array();
 				// Update map and go there...
 				map.panTo(me);
 
-				MeMarker = new google.maps.Marker({
-					position: me
-				});
-				MeMarker.setMap(map);
 					
 				
 
@@ -177,6 +173,11 @@ var distances = new Array();
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
 				}
+				
+				MeMarker = new google.maps.Marker({
+					position: me
+				});
+				MeMarker.setMap(map);
 				infowindow.setContent("current location, closest: " + shortest_station);
 				infowindow.open(map, MeMarker);
 			} 
