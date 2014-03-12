@@ -76,7 +76,7 @@ var marker;
 var infowindow = new google.maps.InfoWindow();
 var xhr;
 var line_color;
-var shortest;
+var shortest = 100000000000;
 var shortest_station;
 var stationCoords = new Array();
 var image = {
@@ -110,12 +110,13 @@ var distances = new Array();
 	{
 		data = JSON.parse(xhr.responseText);
 		line_color = data["line"];
-		shortest = 1000000000;
+		
 		stations.forEach(function(station){
 			if(station.Line.toLowerCase() == line_color){
 
 				var stationLoc = new google.maps.LatLng(station.lat, station.long);
 				if(calculateDistance(station.lat, station.long) < shortest){
+					console.log("HERE");
 					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
 					console.log("distance:" + shortest + "  station: " + station.station);
