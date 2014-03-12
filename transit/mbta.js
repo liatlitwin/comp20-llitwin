@@ -201,14 +201,14 @@ var distances = new Array();
 
 		// Create a marker
 		marker = new google.maps.Marker({
-			position: me,
+			position: me
 			//title: "Current location" + " shortest: " + shortest_station;
 
 		});
 		marker.setMap(map);
 			
 		distances.min()
-		infowindow.setContent("current location" +  " shortest: " + shortest_station);
+		infowindow.setContent("current location, shortest: " + shortest_station);
 		infowindow.open(map, marker);
 		
 		
