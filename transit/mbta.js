@@ -182,14 +182,13 @@ var distances = new Array();
 		MyMarker = new google.maps.Marker({
 					position: me,
 				});
-				MyMarker.setMap(map);
-				infowindow.setOptions({ 
-					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
-					position: me,
-				});
-				infowindow.open(map, MyMarker);
-
-			});
+		MyMarker.setMap(map);
+		infowindow.setOptions({ 
+			content: "CURRENT LOCATION. Closest station: " + shortest_station, 
+			position: me,
+		});
+		infowindow.open(map, MyMarker);
+		
 
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
