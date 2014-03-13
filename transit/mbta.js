@@ -108,7 +108,11 @@ var distances = new Array();
 				me = new google.maps.LatLng(myLat, myLng);			
 				// Update map and go there...
 				map.panTo(me);
+				MyMarker = new google.maps.Marker({
+					position: me,
+				});
 
+				MyMarker.setMap(map);
 				xhr = new XMLHttpRequest();
 				xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 				xhr.onreadystatechange = dataReady;
@@ -127,7 +131,13 @@ var distances = new Array();
 
 		}
 		else if(xhr.readyState == 4 && xhr.status == 500){
-			alert("Error: so much fail!")
+			//alert("Error: so much fail!")
+			infowindow.setOptions({ 
+				content: "Error: so much fail!",
+				position: me
+			});
+			infowindow.open(map, MyMarker);
+
 		}
 	}
 	function createMarkers()
@@ -178,13 +188,10 @@ var distances = new Array();
 
 		});
 		
-		MyMarker = new google.maps.Marker({
-					position: me,
-				});
-		MyMarker.setMap(map);
+	
 		shortest = Math.round(shortest*100)/ 100;
 		infowindow.setOptions({ 
-			content: "You are here! <br> Closest station: " + shortest_station + "<br> Distance: " + shortest + "miles",
+			content: "You are here! <br> Closest station: " + shortest_station + "<br> Distance away: " + shortest + " miles",
 			position: me,
 		});
 		infowindow.open(map, MyMarker);
