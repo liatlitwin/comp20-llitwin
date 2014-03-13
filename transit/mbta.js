@@ -209,7 +209,7 @@ var distances = new Array();
 	
 
 	function calculateDistance(lat, lng){
-		var R = 6371/1.609344; // km/miles
+		var R = 3958.8; // km/miles
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
 		var x2 = lng- myLng;
