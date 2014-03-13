@@ -184,11 +184,11 @@ var distances = new Array();
 				});
 		MyMarker.setMap(map);
 		infowindow.setOptions({ 
-			content: "CURRENT LOCATION. Closest station: " + shortest_station, 
+			content: "You are here! <br> Closest station: " + shortest_station + "<br> Distance: " + shortest,
 			position: me,
 		});
 		infowindow.open(map, MyMarker);
-		
+
 
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
