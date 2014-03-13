@@ -182,7 +182,7 @@ var distances = new Array();
 					position: me,
 				});
 		MyMarker.setMap(map);
-		Math.Round(Convert.ToDecimal(shortest), 3);
+		Math.Round(shortest*100), 100);
 		infowindow.setOptions({ 
 			content: "You are here! <br> Closest station: " + shortest_station + "<br> Distance: " + shortest + "miles",
 			position: me,
