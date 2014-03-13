@@ -142,7 +142,6 @@ var distances = new Array();
 				if(calculateDistance(station.lat, station.long) < shortest){
 					shortest = calculateDistance(station.lat, station.long);
 					shortest_station = station.station;
-					console.log("distance:" + shortest + "  station: " + station.station);
 				}
 
 				
@@ -212,7 +211,6 @@ var distances = new Array();
 		                Math.sin(dLon/2) * Math.sin(dLon/2);  
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 		var d = R * c; 
-		console.log(myLat +"," + myLng);
 		return d;
 
 		
