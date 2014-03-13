@@ -133,7 +133,7 @@ var distances = new Array();
 		else if(xhr.readyState == 4 && xhr.status == 500){
 			//alert("Error: so much fail!")
 			infowindow.setOptions({ 
-				content: "Error: so much fail!",
+				content: "You are here! <br> Error: so much fail!",
 				position: me
 			});
 			infowindow.open(map, MyMarker);
