@@ -109,7 +109,6 @@ var distances = new Array();
 				// Update map and go there...
 				map.panTo(me);
 
-				// Create a marker
 				xhr = new XMLHttpRequest();
 				xhr.open("get", "http://mbtamap.herokuapp.com/mapper/rodeo.json", true);
 				xhr.onreadystatechange = dataReady;
@@ -180,7 +179,17 @@ var distances = new Array();
 
 		});
 		
-		
+		MyMarker = new google.maps.Marker({
+					position: me,
+				});
+				MyMarker.setMap(map);
+				infowindow.setOptions({ 
+					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
+					position: me,
+				});
+				infowindow.open(map, MyMarker);
+
+			});
 
 		var polyLine = new google.maps.Polyline({
 			path: stationCoords,
@@ -194,30 +203,6 @@ var distances = new Array();
 	
 
 	function calculateDistance(lat, lng){
-
-		if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
-			navigator.geolocation.getCurrentPosition(function(position) {
-				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;
-				me = new google.maps.LatLng(myLat, myLng);			
-				// Update map and go there...
-				map.panTo(me);
-
-				MyMarker = new google.maps.Marker({
-					position: me,
-				});
-				MyMarker.setMap(map);
-				infowindow.setOptions({ 
-					content: "CURRENT LOCATION. Closest station: " + shortest_station, 
-					position: me,
-				});
-				infowindow.open(map, MyMarker);
-
-			});
-		}
-		else {
-			alert("Geolocation is not supported by your web browser.  What a shame!");
-		}
 		var R = 6371; // km 
 		var x1 = lat - myLat;
 		var dLat = x1.toRad();  
