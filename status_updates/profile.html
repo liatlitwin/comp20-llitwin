@@ -25,7 +25,13 @@
 			
 		var text = month + "/" + day + "/" + year + " " +hour + ":" + minute + " - " + fbstatus;
 		localStorage[new Date().getTime()] = text;
-				reload();
+		var element = document.getElementById("status");
+		var list = document.getElementById("list");	
+		while(list.hasChildNodes()){
+			list.removeChild(list.lastChild);
+		}
+
+		reload();
 
 	}
 
@@ -33,6 +39,7 @@
 	{
 		
 		var output = "";
+
 
 		for(key in localStorage){
 			var element = document.getElementById("status");
