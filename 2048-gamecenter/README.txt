@@ -12,6 +12,7 @@ A4 readme
 4. The "grid" object (as a JSON) and the "score" object are both stored in the game_manager.js file within the JS directory. 
 
 5. I added the following lines in the GameManger.prototype.restart function in the js/game_manager.js source file:
+  		var gridstring = JSON.stringify(this.grid);
 		var scorejson = {"username" : "liatlitwin", "score" : this.score, "grid" : gridstring}; 
    		$.post( "http://protected-harbor-9895.herokuapp.com/submit.json", scorejson);
    	This made it so that a score was sent everytime the user pressed "try again" or restart. 
