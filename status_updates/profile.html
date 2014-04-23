@@ -7,6 +7,7 @@
 <title>Fecesbook</title>
 
 <script>
+
 	function update_status(){
 
 		var date = new Date();
@@ -21,17 +22,37 @@
 
 
 		var fbstatus = document.getElementById("msg").value;
-	
-		var element=document.getElementById("status");
+			
+		var text = month + "/" + day + "/" + year + " " +hour + ":" + minute + " - " + fbstatus;
+		localStorage[new Date().getTime()] = text;
+		var element = document.getElementById("status");
+		var list = document.getElementById("list");	
+		while(list.hasChildNodes()){
+			list.removeChild(list.lastChild);
+		}
 
-		var item = document.createElement("li");		
-		var text = document.createTextNode(month + "/" + day + "/" + year + " " +hour + ":" + minute + " - " + fbstatus);
-		item.appendChild(text);
-		var list = document.getElementById("list");
-		list.appendChild(item);
-		list.insertBefore(item, list.childNodes[0]);
+		reload();
+
+	}
+
+	function reload()
+	{
 		
-		element.appendChild(list);
+		var output = "";
+
+
+		for(key in localStorage){
+			var element = document.getElementById("status");
+			var list = document.getElementById("list");	
+			var item = document.createElement("li");
+			//output = output + localStorage[key] + "<br>";
+			text = document.createTextNode(localStorage[key]);
+			item.appendChild(text);
+			list.appendChild(item);
+			list.insertBefore(item, list.childNodes[0]);
+			element.appendChild(list);
+		}		
+		
 	}
 
 
