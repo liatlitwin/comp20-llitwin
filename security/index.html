@@ -1,0 +1,117 @@
+<!-- Introduction - Provide a description of the product and what you were hired to do
+Methodology - Describe your methodology pen testing the application, including the tools that you used
+Abstract of Findings - Provide an overview of all the security issues you identified. This section should be written for non-technical managers who do not have technical expertise and do not have time to read the entire document. Write this section using lay language.
+Issues Found - For each issue that you find, document:
+	Issue (e.g., database injection, really bad programming practice)
+	Location / page where issue was found
+	Severity of issue (e.g., low, medium , or high). Justify your answer.
+	Description of issue. How did you find it? A screenshot of problem is excellent.
+	Proof of vulnerability. Screenshots are ideal.
+	Resolution. How did you resolve the issue? Show code if possible.
+Conclusion - You can also list future considerations and recommendations with costs. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Scorecenter Security Report </title>
+	<link rel = "stylesheet" type = "text/css" href = "style.css"></link>
+</head>
+
+<body>
+	<h1> Scorecenter Security Report </h1>
+	<h2> Prepared by Liat Litwin </h2>
+
+	<h3> Introduction </h3>
+	<p> The web application 2048-Gamecenter was developed for <a href="http://tuftsdev.github.io/WebProgramming/assignments/a5.html">Comp20 assignment 4.</a> It's purpose was to maintain a history of all final scores, as well as the final grid when the game is terminated. The application has a web interface so that users can see all scores, as well as have access to an API that returns a JSON string of scores for a specifed user. This is a security assessment of such a <a href = "http://fast-temple-2404.herokuapp.com/"> web application </a> developed by Ariel Luque. The following document identifies vulnerabilities in the application and suggests methods by which to resolve such issues. </p>
+
+	<h3> Methodology </h3>
+	<p> The primary method of testing for security vulnerabilities was through making attacks. First, attacks were performed in what is called a "black box" testing manner. That is, I made attacks without looking at any source code. <br>Following this, I looked at the source code and continued my attacks after having suspicions of certain vulnerabilities based on the code. </p>
+
+	<h3> Abstract of Findings </h3>
+
+	<p>	The primary security vulnerabilities stem from the fact that there are almost no verification checks for the web application. This means that anyone can edit and add whatever they'd like to the web application, without playing 2048. Furthermore, there are vulnerabilities in the database and Cross Origing Javascript Request. These security flaws allow malicious attackers to overload the database or allow the submission of data from any source. All of these flaws are relatively simple to fix, and thus prevent hacking of the web application.</p>
+
+	<h3> Issues Found </h3>
+		<ol>
+		<li><strong><div id= "list">Injection of additional database fields </div></strong> </li>
+			<ul>
+				<li><strong>Location: </strong> in the POST API <code>/adduser</code>, affects the index <code> /</code> page </li>
+				<li><strong> Severity: </strong> HIGH: This security vulnerability puts the integrity of the 2048-gamecenter application's core idea at risk. </li>
+				<li><strong>Description: </strong> The content of a new submission for a score is not verified when adding a document to the database. So long as the data fields contain the keys for "username" and "score", they will be added to the database and thus dispayed on the root page of the application. For example, running <code> curl --d '{"username":"LiatLitwin","score":"1000000000", "date": "Wed Apr 22 2014 18:41:34 GMT-0400(EDT)"}' http://fast-temple-2404.herokuapp.com/adduser</code> in the terminal will add a score of 1000000000 under my username, LiatLitwin. This is a pretty major security flaw, as it allows for anyone to make up any score and thus the entire purpose of the scorecenter application is moot. With such a major security vulnerability, the application does not serve its primary purpose of displaying the high scores of users, as any score may be completely made up. </li>
+				<li><strong>Proof of vulnerability: </strong></li><img src = "LiatHack.png" alt = "Liat score of 10000000" width = 50% height = 50%>
+				<li><strong>Resolution: </strong> This could be resolved using several different methods. First, it would be good to create an object with verified fields before inserting it into the database. This way, a document cannot be inserted unless it has all fields.In my injection, I did not write a fake grid, as that would take a long time to create, and I knew that the grid is not displayed on the root page. However, if a document could only be inserted when all fields (username, score, grid, and date) exist, the application would be less vulnerable to simple hacking using the cURL command in terminal.
+						<br><pre><div class = "code"><code>var text = req.body;
+if((text.username != "undefined")&&(text.score != "")&&(text.grid !="undefined")&&(text.date !="undefined"))	
+	var score = {
+		username : text.username,
+		score : parseInt(text.score),
+		grid : text.grid,
+		date : text.date
+		collection.insert(score, function(err, result) { ... } );
+	};
+else
+	res.send("ERROR");
+						</code></div></pre>
+
+						It would also be beneficial to only allow integers up to a certain maximum, perhaps the <a href="http://www.reddit.com/r/2048/comments/214njx/highest_possible_score_for_2048_warning_math/"> highest possible 2048 score. </a> This would ensure that hackers do not put in ridiculous scores and thus mess up the scoreboard. Further verification checks would make this a more secure web application. For instance, limiting the number of characters for a username and checking that the score is in fact a number would be important checks that could further strengthen the app. </li>
+
+				</li>
+					</ul>
+			</ul><br>
+			<li><strong><div id= "list">Cross Origin Resource Sharing Changes </div></strong></li>
+				<ul>
+					<li><strong>Location: </strong> <code> /adduser</code> POST route</li>
+					<li><strong>Severity: </strong> HIGH</li>
+					<li><strong>Description: </strong> The web application is currently set to accept anything, as indicated by an asterisk in the following code: <code>   res.header("Access-Control-Allow-Origin", "*"); </code> Therefore, anyone can send data to the site from any location. I was able to add the following AJAX request to a local version of 2048 and submit it to the web application's POST route:
+<pre><div class = 'code'><code> var name = "Liat" 
+    var date = new Date(); 
+    var score = 10000000
+      $.ajax
+      ({
+        type: "POST",
+        url: 'http://fast-temple-2404.herokuapp.com/adduser', 
+        dataType: 'json', 
+        async: false, 
+        data: {"username": name, "score": score, "grid": JSON.stringify(this.grid), "date": date},
+        success: function(){
+          console.log("K THX"); 
+        }
+      })</code></div></pre>
+					 I was able to hardcode that my score is always 10000000, no matter who plays. Although this was a rather simple hack, I could have also built my own application and had it send junk data to the web application- photos, videos, etc.  So long as the created json has the fields of username, score, and date, the resulting data will be displayed in the application. <br>
+						</li>
+					<li><strong>Resolution: </strong> To resolve this CORS security vulnerability, I recommend to replace the asterisk with a real URI, thus limiting which websites can connect to the web application. If develpoment of this web application were to be expanded, perhaps to allow the holding of scores from multiple games, it may be useful to set up a developer key and credential system. That way, any website hoping to connect to the web application would have to be verified and authenticized prior.</li>
+				</ul> <br>
+			<li><strong><div id= "list">Database is vulnerable</div></strong></li>
+				<ul>
+					<li><strong>Location: </strong> <code> /adduser</code> POST route  </li>
+					<li><strong>Severity: </strong> MEDIUM. Although this would not neccessarily make any changes to the website, this vulnerability could potentially overload the system and potentially crash the app (if such a large file was repeatedly sent, for example)
+					<li><strong>Description: </strong>A user could submit a file or JSON of any size or length. Although it would not necessarily make changes to the front-end display of the web application, this could create more serious issues in the long run if this app were to be actually used. A potential hacker could crash the system or overload the database, exceeding the size allowance. I was able to submit an entire movie (Mean Girls, which is 1.13 GB) to the database: <br><img src = "meangirls.png" alt = "screenshot of mean girls movie submission" width = 70% height=70%><br>
+						NOTE: the "moved temporarily" message demonstrates a sucess. I got the same confirmation when submitting other, normal, data to the post request of <code>/adduser</code> The web application was not completed at time of security testing. Do to bugs, I was also unable to test locally, and thus could not go into the mongo shell to confirm the movie was indeed there. Nevertheless, the fact that I did not get any error when submitting a huge file, like the Mean Girls movie, demonstrates a significant vulnerability of the eweb application.</li> 
+					<li><strong>Resolution</strong>This security flaw is not very hard to fix, luckily. All it requires is limiting the amount of data that can be transfered. The following code limits it to 2mb: <code>app.use(express.limit('2mb')) With such a constraint, it would be impossible to load an entire film to the database and risk crashing the server. </code></li>
+				</ul>
+		</ol>
+	<h3> Conclusion </h3>
+<p> Many issues within the web application make it easy for malicious hackers to alter the content of the page and pose a threat to the database system. The Jade template engine used to render the main site escaped brackets and ampersands, but this was the only step taken to prevent security leaks. It is crucial to add many more verification checks both when submitting data and when using CORS. Sanitizing user input is also a crucial step that needs to be taken. Fortunately, these fixes do not require any major changes to the code and are low-cost. 
+<br>
+If the app were to expand and allow input from other sites, a secure API key and user regristration system would be necessary. Amazon has AWS authentication that is affordable. They provide a simple <a href = "http://calculator.s3.amazonaws.com/index.html"> calculator </a> to allow for price checking.
+Time and money needs to be invested into creating a secure application and ensuring that it is not vulnerable to attacks. </p>
+
+</body>
+</html>
+
+
+<!--
+
+Just posting this:
+curl -X POST -H "Content-Type: application/json" -d '{"username":"LIAT","score":"100000000000"}' http://fast-temple-2404.herokuapp.com/adduser 
+
+to the terminal got me a score of huge numbers! (image!) 
+
+cross origin resource changing
+* accepts everything
+bad idea, anyone can send data. 
+to Resolve: replace asterisk with a real URI. Also set up a developer key, credential thing. 
+
+
+curl -F '{username: @filename"}'
+-->
